@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const icon = mobileMenuBtn.querySelector('i');
         if (isActive) {
-            icon.classList.replace('fa-ellipsis-vertical', 'fa-times');
+            icon.classList.replace('fa-bars', 'fa-times');
         } else {
-            icon.classList.replace('fa-times', 'fa-ellipsis-vertical');
+            icon.classList.replace('fa-times', 'fa-bars');
         }
     };
 
