@@ -59,12 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
         revealObserver.observe(el);
     });
 
-    // Force Video to play immediately
-    if (heroVideo) {
-        heroVideo.play().catch(() => {
-            // Fallback for autoplay blockers
-            document.addEventListener('touchstart', () => heroVideo.play(), { once: true });
-            document.addEventListener('click', () => heroVideo.play(), { once: true });
+    // Force All Videos to play immediately
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(video => {
+        video.play().catch(() => {
+            // Fallback for autoplay blockers (Chrome, Safari)
+            const playTrigger = () => {
+                video.play();
+                document.removeEventListener('touchstart', playTrigger);
+                document.removeEventListener('click', playTrigger);
+            };
+            document.addEventListener('touchstart', playTrigger, { once: true });
+            document.addEventListener('click', playTrigger, { once: true });
         });
-    }
+    });
 });
