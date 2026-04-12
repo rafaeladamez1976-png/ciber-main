@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
+    const menuOverlay = document.querySelector('.menu-overlay');
     const heroVideo = document.querySelector('.hero-video-bg');
 
     // Handle scroll effect on navbar
@@ -13,23 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+    const toggleMenu = () => {
+        const isActive = navLinks.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        document.body.style.overflow = isActive ? 'hidden' : '';
+        
         const icon = mobileMenuBtn.querySelector('i');
-        if (navLinks.classList.contains('active')) {
+        if (isActive) {
             icon.classList.replace('fa-bars', 'fa-times');
         } else {
             icon.classList.replace('fa-times', 'fa-bars');
         }
-    });
+    };
+
+    // Mobile menu toggle
+    mobileMenuBtn.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
 
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.replace('fa-times', 'fa-bars');
+            if (navLinks.classList.contains('active')) {
+                toggleMenu();
+            }
         });
     });
 
@@ -38,28 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
             }
         });
     };
 
     const revealObserver = new IntersectionObserver(revealCallback, {
-        threshold: 0.1
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     });
 
     document.querySelectorAll('.reveal').forEach(el => {
         revealObserver.observe(el);
     });
 
-    // Ensure video plays immediately
+    // Force Video to play immediately
     if (heroVideo) {
-        heroVideo.play().catch(error => {
-            console.log("Autoplay prevented. Initializing video on first interaction.");
-            // If autoplay is blocked, play on first user interaction
-            const playOnInteract = () => {
-                heroVideo.play();
-                document.removeEventListener('click', playOnInteract);
-            };
-            document.addEventListener('click', playOnInteract);
+        heroVideo.play().catch(() => {
+            // Fallback for autoplay blockers
+            document.addEventListener('touchstart', () => heroVideo.play(), { once: true });
+            document.addEventListener('click', () => heroVideo.play(), { once: true });
         });
     }
 });
