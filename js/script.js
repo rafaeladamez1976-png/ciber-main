@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const toggleMenu = () => {
         const isActive = navLinks.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
         menuOverlay.classList.toggle('active');
         document.body.style.overflow = isActive ? 'hidden' : '';
         
