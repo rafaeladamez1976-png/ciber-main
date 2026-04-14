@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SIAR-C Alerts Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff88",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0a0c0b",
+                        "critical": "#ff4d4d",
+                        "high": "#ff9500",
+                        "medium": "#ffcc00",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .critical-glow {
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.15);
+            border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 bg-slate-950/50 border-r border-white/5 flex flex-col justify-between p-6">
+<div class="space-y-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-primary text-xl font-black tracking-tighter">SIAR-C</h1>
+<p class="text-slate-500 text-xs font-medium uppercase tracking-widest">Monitoring System</p>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center justify-between px-4 py-3 rounded-xl bg-primary/10 text-primary border border-primary/20 group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px] fill-1">notifications</span>
+<span class="text-sm font-semibold">ALERTS</span>
+</div>
+<span class="bg-critical text-white text-[10px] font-black px-2 py-0.5 rounded-full ring-4 ring-critical/20">3</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">description</span>
+<span class="text-sm font-semibold">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-semibold">Settings</span>
+</a>
+</nav>
+</div>
+<div class="pt-6 border-t border-white/5">
+<div class="flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-emerald-400 flex items-center justify-center text-slate-950 font-bold">
+                        JD
+                    </div>
+<div class="flex flex-col">
+<span class="text-sm font-bold">John Doe</span>
+<span class="text-xs text-slate-500">Admin</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Header -->
+<header class="flex items-end justify-between px-10 pt-10 pb-6 shrink-0">
+<div>
+<h2 class="text-4xl font-black tracking-tight dark:text-white">Alerts</h2>
+</div>
+<button class="text-primary hover:text-primary/80 text-sm font-bold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">done_all</span>
+                    Mark all as read
+                </button>
+</header>
+<!-- Filters Bar -->
+<div class="px-10 py-4 flex gap-3 shrink-0">
+<button class="px-5 py-2 rounded-full bg-primary text-slate-950 text-xs font-black tracking-wider uppercase transition-all shadow-lg shadow-primary/20">ALL</button>
+<button class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-black tracking-wider uppercase transition-all">UNREAD</button>
+<button class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-black tracking-wider uppercase transition-all flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-critical"></span> CRITICAL
+                </button>
+<button class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-black tracking-wider uppercase transition-all flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-high"></span> HIGH
+                </button>
+<button class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 text-xs font-black tracking-wider uppercase transition-all flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-medium"></span> MEDIUM
+                </button>
+</div>
+<!-- Alerts List -->
+<div class="flex-1 overflow-y-auto px-10 pb-10 space-y-4 custom-scrollbar">
+<!-- Alert Card 1: Critical -->
+<div class="glass-card critical-glow rounded-xl p-5 flex gap-5 items-start hover:bg-white/[0.05] transition-all group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="text-[10px] font-black uppercase text-critical bg-critical/10 px-2 py-1 rounded-md tracking-tighter">Immediate Action Required</span>
+</div>
+<div class="w-12 h-12 rounded-full bg-critical/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-critical font-bold">report</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-critical text-[10px] font-black uppercase tracking-widest">Critical</span>
+<span class="text-slate-500 text-[10px]">• 2m ago</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-1">System Breach Detected</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-4 max-w-2xl">Suspicious brute-force activity detected in the main production database server from multiple unknown IP addresses.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Client:</span>
+<a class="text-xs font-bold text-primary/80 hover:text-primary underline underline-offset-4 decoration-primary/30" href="#">Nexus Corp</a>
+</div>
+<button class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                View Client <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 2: Critical -->
+<div class="glass-card critical-glow rounded-xl p-5 flex gap-5 items-start hover:bg-white/[0.05] transition-all group relative">
+<div class="w-12 h-12 rounded-full bg-critical/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-critical font-bold">leak_add</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-critical text-[10px] font-black uppercase tracking-widest">Critical</span>
+<span class="text-slate-500 text-[10px]">• 5m ago</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-1">Data Leak Alert</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-4 max-w-2xl">Unauthorized large-scale data egress detected from secure terminal 04. Encrypted backup volumes are being accessed.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Client:</span>
+<a class="text-xs font-bold text-primary/80 hover:text-primary underline underline-offset-4 decoration-primary/30" href="#">Stratos Inc</a>
+</div>
+<button class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                View Client <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 3: High -->
+<div class="glass-card rounded-xl p-5 flex gap-5 items-start hover:bg-white/[0.05] transition-all group border-white/5">
+<div class="w-12 h-12 rounded-full bg-high/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-high font-bold">security</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-high text-[10px] font-black uppercase tracking-widest">High</span>
+<span class="text-slate-500 text-[10px]">• 14m ago</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-1">Unauthorized Admin Access</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-4 max-w-2xl">A user with limited privileges attempted to modify global firewall rules. Request originated from internal VPN.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Client:</span>
+<a class="text-xs font-bold text-primary/80 hover:text-primary underline underline-offset-4 decoration-primary/30" href="#">Omni Group</a>
+</div>
+<button class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                View Client <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 4: High -->
+<div class="glass-card rounded-xl p-5 flex gap-5 items-start hover:bg-white/[0.05] transition-all group border-white/5">
+<div class="w-12 h-12 rounded-full bg-high/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-high font-bold">lock_open</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-high text-[10px] font-black uppercase tracking-widest">High</span>
+<span class="text-slate-500 text-[10px]">• 32m ago</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-1">Firewall Bypass Attempt</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-4 max-w-2xl">Pattern-based attack identified trying to circumvent port-forwarding rules on the gateway router.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Client:</span>
+<a class="text-xs font-bold text-primary/80 hover:text-primary underline underline-offset-4 decoration-primary/30" href="#">Apex Global</a>
+</div>
+<button class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                View Client <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Alert Card 5: Medium -->
+<div class="glass-card rounded-xl p-5 flex gap-5 items-start hover:bg-white/[0.05] transition-all group border-white/5">
+<div class="w-12 h-12 rounded-full bg-medium/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-medium font-bold">login</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-1">
+<span class="text-medium text-[10px] font-black uppercase tracking-widest">Medium</span>
+<span class="text-slate-500 text-[10px]">• 1h ago</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-1">Multiple Login Failures</h3>
+<p class="text-slate-400 text-sm leading-relaxed mb-4 max-w-2xl">Account 'm_smith' has failed to authenticate 5 times in the last 10 minutes. Device: Mobile Client (iOS).</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500">Client:</span>
+<a class="text-xs font-bold text-primary/80 hover:text-primary underline underline-offset-4 decoration-primary/30" href="#">Zenith Systems</a>
+</div>
+<button class="text-xs font-black text-primary uppercase tracking-widest flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                View Client <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

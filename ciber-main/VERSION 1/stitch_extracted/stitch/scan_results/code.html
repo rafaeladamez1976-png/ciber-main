@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SIAR-C Scan Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff88",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#080c0a",
+                        "glass": "rgba(255, 255, 255, 0.03)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        .gauge-container {
+            position: relative;
+            width: 240px;
+            height: 120px;
+            overflow: hidden;
+        }
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 20;
+            stroke-linecap: round;
+        }
+        .gauge-fill {
+            fill: none;
+            stroke: #f97316; /* Orange for 58/100 High Risk */
+            stroke-width: 20;
+            stroke-linecap: round;
+            stroke-dasharray: 314; /* half circle length approx */
+            stroke-dashoffset: 132; /* (100-58)% of 314 */
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex">
+<!-- Sidebar -->
+<aside class="w-64 fixed inset-y-0 left-0 bg-[#0c120f] border-r border-white/5 z-50">
+<div class="flex flex-col h-full p-6">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined font-bold">shield_with_heart</span>
+</div>
+<div>
+<h1 class="text-white text-base font-bold leading-none">SIAR-C Admin</h1>
+<p class="text-primary/60 text-[10px] uppercase tracking-wider font-bold">Enterprise Security</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined">security_update_warning</span>
+<span class="text-sm font-medium">Scans</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<button class="mt-auto flex items-center justify-center gap-2 bg-primary text-background-dark py-3 rounded-xl font-bold text-sm neon-glow">
+<span class="material-symbols-outlined text-sm">add</span>
+                    New Scan
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 flex-1 p-8">
+<!-- Header Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+<!-- Risk Gauge & Stats -->
+<div class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center gap-8">
+<div class="flex flex-col items-center">
+<div class="gauge-container">
+<svg viewbox="0 0 240 120">
+<path class="gauge-bg" d="M 20 120 A 100 100 0 0 1 220 120"></path>
+<path class="gauge-fill" d="M 20 120 A 100 100 0 0 1 220 120"></path>
+</svg>
+<div class="absolute inset-x-0 bottom-2 text-center">
+<span class="text-4xl font-black text-white">58<span class="text-xl text-slate-500">/100</span></span>
+<p class="text-orange-500 font-bold text-xs uppercase tracking-widest mt-1">High Risk</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3 w-full max-w-[200px]">
+<div class="bg-white/5 border border-white/10 rounded-lg px-4 py-2 flex justify-between items-center">
+<span class="text-xs text-slate-400">Total Findings</span>
+<span class="text-white font-bold">12</span>
+</div>
+<div class="bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-2 flex justify-between items-center">
+<span class="text-xs text-red-400">Critical</span>
+<span class="text-red-500 font-bold">3</span>
+</div>
+<div class="bg-orange-500/10 border border-orange-500/30 rounded-lg px-4 py-2 flex justify-between items-center">
+<span class="text-xs text-orange-400">High Risk</span>
+<span class="text-orange-500 font-bold">4</span>
+</div>
+</div>
+</div>
+<!-- Executive Summary -->
+<div class="glass-card rounded-xl p-8 flex flex-col justify-between">
+<div>
+<h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                            Executive Summary
+                        </h2>
+<p class="text-slate-400 text-sm leading-relaxed mb-6">
+                            Security posture is currently rated as High Risk due to critical misconfigurations in the API gateway. Unauthorized data exposure risks were detected in the user authentication flow. Immediate remediation is recommended for A01 and A03 categories.
+                        </p>
+</div>
+<div class="flex flex-wrap gap-4">
+<button class="flex-1 min-w-[160px] bg-primary text-background-dark font-bold py-2.5 rounded-lg text-sm transition-all hover:opacity-90 neon-glow">
+                            Download PDF Report
+                        </button>
+<button class="flex-1 min-w-[160px] border border-white/20 text-white font-bold py-2.5 rounded-lg text-sm hover:bg-white/5 transition-all">
+                            Share Report
+                        </button>
+</div>
+</div>
+</div>
+<!-- OWASP Grid -->
+<section class="mb-10">
+<h3 class="text-white font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+                    OWASP Top 10 Compliance
+                </h3>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+<!-- A01 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-red-500 hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A01:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Broken Access Control</h4>
+<div class="flex items-center gap-2 text-red-500">
+<span class="material-symbols-outlined text-base">error</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Critical</span>
+</div>
+</div>
+<!-- A02 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A02:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Cryptographic Failures</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+<!-- A03 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-orange-500 hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A03:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Injection</h4>
+<div class="flex items-center gap-2 text-orange-500">
+<span class="material-symbols-outlined text-base">warning</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Warning</span>
+</div>
+</div>
+<!-- A04 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A04:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Insecure Design</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+<!-- A05 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-orange-500 hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A05:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Security Misconfig</h4>
+<div class="flex items-center gap-2 text-orange-500">
+<span class="material-symbols-outlined text-base">warning</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Warning</span>
+</div>
+</div>
+<!-- A06 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A06:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Vulnerable Comps</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+<!-- A07 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-red-500 hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A07:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Identification Fail</h4>
+<div class="flex items-center gap-2 text-red-500">
+<span class="material-symbols-outlined text-base">error</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Critical</span>
+</div>
+</div>
+<!-- A08 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A08:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Software Integrity</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+<!-- A09 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A09:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">Logging &amp; Monitoring</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+<!-- A10 -->
+<div class="glass-card p-4 rounded-lg border-t-2 border-t-primary hover:bg-white/10 transition-colors">
+<span class="text-[10px] font-mono text-slate-500">A10:2021</span>
+<h4 class="text-sm font-bold text-white truncate mb-4">SSRF</h4>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Healthy</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Findings List -->
+<section>
+<h3 class="text-white font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                    Detailed Findings
+                </h3>
+<div class="space-y-4">
+<!-- Finding 1 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-red-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-red-500 text-white text-[10px] font-black rounded uppercase">Critical</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">AWS API Gateway</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A01:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Unauthenticated User Profile Access</h4>
+<p class="text-slate-400 text-sm mb-4">API endpoint `/api/v1/user/details` allows access to private user metadata without a valid JWT token. Potential for massive data scraping.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Implement Mandatory Access Control (MAC) on all user detail endpoints and verify token identity.</p>
+</div>
+</div>
+</div>
+<!-- Finding 2 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-orange-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-orange-500 text-white text-[10px] font-black rounded uppercase">High</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">Customer Database</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A03:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">SQL Injection in Search Query</h4>
+<p class="text-slate-400 text-sm mb-4">The search bar input is not properly sanitized before being passed to the SQL engine. Allows for blind SQL injection.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Use parameterized queries or an ORM for all database interactions involving user input.</p>
+</div>
+</div>
+</div>
+<!-- Finding 3 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-orange-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-orange-500 text-white text-[10px] font-black rounded uppercase">High</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">S3 Bucket Config</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A05:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Publicly Accessible Storage Bucket</h4>
+<p class="text-slate-400 text-sm mb-4">Bucket `siarc-prod-assets` is currently set to public read access. Contains internal build artifacts.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Enable "Block Public Access" and use CloudFront signed URLs for asset distribution.</p>
+</div>
+</div>
+</div>
+<!-- Finding 4 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-yellow-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-yellow-500 text-white text-[10px] font-black rounded uppercase">Medium</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">Docker Image</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A06:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Outdated Library Version</h4>
+<p class="text-slate-400 text-sm mb-4">Production container is running `libssl 1.1.1f` which has 2 known low-severity CVEs.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Update base image to the latest stable Debian/Alpine version and rebuild containers.</p>
+</div>
+</div>
+</div>
+<!-- Finding 5 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-red-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-red-500 text-white text-[10px] font-black rounded uppercase">Critical</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">Auth Service</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A07:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Hardcoded API Credentials</h4>
+<p class="text-slate-400 text-sm mb-4">Production credentials for the Stripe API were found in plain text within the application's configuration file.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Migrate all secrets to AWS Secrets Manager or HashiCorp Vault immediately.</p>
+</div>
+</div>
+</div>
+<!-- Finding 6 -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-yellow-500">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="px-2 py-0.5 bg-yellow-500 text-white text-[10px] font-black rounded uppercase">Medium</span>
+<span class="text-xs text-slate-400 font-medium">Source: <span class="text-white">Nginx Config</span></span>
+<span class="text-xs text-slate-400 font-medium">Tag: <span class="text-white">A05:2021</span></span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Missing HSTS Headers</h4>
+<p class="text-slate-400 text-sm mb-4">HTTP Strict Transport Security is not enabled on the production load balancer.</p>
+<div class="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div class="text-xs">
+<p class="text-primary font-bold mb-1">Recommendation</p>
+<p class="text-slate-300">Add `Strict-Transport-Security` header with a long max-age and include subdomains.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

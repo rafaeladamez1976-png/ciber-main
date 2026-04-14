@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SIAR-C | Clients Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff88",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f231a",
+                        "danger": "#ef4444",
+                        "warning": "#f59e0b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-darker {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-white/10 bg-white/50 dark:bg-black/20 flex flex-col backdrop-blur-xl">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(0,255,136,0.3)]">
+<span class="material-symbols-outlined text-background-dark font-bold">shield</span>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">SIAR-C</h1>
+<span class="text-[10px] uppercase tracking-widest text-primary font-bold">Security Admin</span>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-semibold">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="text-sm font-medium">Scans</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-slate-200 dark:border-white/10">
+<div class="flex items-center gap-3 p-2">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+<img alt="Admin Avatar" data-alt="Avatar of the system administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEYEWblQGzR1q_YLqLxiHygXu7oUeudeULAnc_UE8oRgHM_ZHcrSF49oY1r80RoihAGhOAPphOHjXyHFo0NCHYuC2zxNlBSWNQFy3ezBBoVYkXcZDmDXL2mahDicXoAwmI5J8_JFwmuXmkqP_8Y0fN4Q5Kmh_2BgrsUOu-SFKhiZWoBfdKWRU0lTEvzpwMdMBkqr_sqES3SRZBR1bPK3Nsh2PcNjSGy5bAD_Yfy2N-jM_OF8m_qYH-VEr37H3lMIAn6JFkHk4rpQ9v"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold truncate">Alex Rivera</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400">Chief Officer</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm cursor-pointer">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col relative overflow-hidden">
+<!-- Header -->
+<header class="h-20 border-b border-slate-200 dark:border-white/10 px-8 flex items-center justify-between glass shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="text-2xl font-bold dark:text-white">Clients</h2>
+<div class="h-6 w-px bg-slate-300 dark:bg-white/20 mx-2"></div>
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg leading-none">search</span>
+<input class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary placeholder-slate-500" placeholder="Search clients, domains, or IP..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 bg-primary text-background-dark px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">add</span>
+                        New Client
+                    </button>
+<button class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 border border-transparent hover:border-white/10 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Table Section -->
+<section class="flex-1 p-8 overflow-y-auto custom-scrollbar relative">
+<div class="glass rounded-2xl overflow-hidden">
+<table class="w-full border-collapse">
+<thead>
+<tr class="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-white/10">
+<th class="px-6 py-5 font-semibold">Company</th>
+<th class="px-6 py-5 font-semibold">Last Scan</th>
+<th class="px-6 py-5 font-semibold">Score</th>
+<th class="px-6 py-5 font-semibold">Risk</th>
+<th class="px-6 py-5 font-semibold">Critical Findings</th>
+<th class="px-6 py-5 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-white/5">
+<!-- Row 1 (Critical) -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] border-l-4 border-danger">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Acme Corp logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXhhDdtH8Z8RZDXbTySxO3B3i1dXY5GEQcNlF3Qn_pSYLcDbeaViSgzmM2e8w-KEqz8YpKzb8S-D8lPXbg5QPEPf3FacF0SPEqWlBx7lB43cdECVHAKirlng5G77LB23XbYKrnh9rIKVQq4j6CA_8RiJWni2aGBI5T9KBZp8Pn7bgA-NMS8oKbatBiKdATvzL6Pmg_-uupLM0KCmeLQbqHnkqTYZ5nMhqB-ZNvk4jJZoojqltAGEysU7DBbF27DbbwDCFHdZe3PphP"/>
+</div>
+<div>
+<p class="text-sm font-bold">Acme Corp</p>
+<p class="text-xs text-slate-500">acme-global.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2h ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-danger/10 text-danger text-xs font-bold border border-danger/20">45</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-danger/20 text-danger">
+<span class="w-1.5 h-1.5 rounded-full bg-danger animate-pulse"></span>
+                                        Critical
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-danger">12 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] bg-slate-50/30 dark:bg-white/[0.01]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Stark Industries logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Mo0gvoWTVVP8G5xOCmowqoAhipBQZi2R1-eaHCIcljwGtaTEeo6Vw-yKyiOtSrvuS1R8MpFdQFTAVbmS52cxeeuV6QUCjwlljY61tZnqUTSzdZzb7nGPD3qoyt4H_60tP8hMxVGTQkcEifLQDL9ADmPehbO_negm-VBb_7fYUjqVAJu368dA5Dvqtv_LINDJs7rj2q1ErwP5PWXkhS3s9zHCrIwmj8Fi7oDDinVrRZmKS4ofv2PJadS6QbZwfk9QYN_rU-zutm-k"/>
+</div>
+<div>
+<p class="text-sm font-bold">Stark Industries</p>
+<p class="text-xs text-slate-500">stark.tech</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">5h ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold border border-primary/20">92</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-primary/20 text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                        Low
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-500">0 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 (Critical Border) -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] border-l-4 border-danger">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Wayne Enterprises logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsj7pANn0_JLRkS3eOZ-cLbNNOlSAc6ssUFrIGWl-EWakPDYJARwZDsgtPbx9wphob-FNcBCT22DiU9S47eR8AdQ1EOciHdQXR2n-j4vjUVb0F63QhqmClaijdnknjZAEPozF7860inPHoYs69vdt5SIR1eDZZwG1XiPotdLChSXCo64A5U0wCMydDSBUb36LKM2ioprfu_PpGlI0j2XmiaMoWpFXXvQYxm1TF3UQLn0I9kwmSsKdjITD-Ke4bDGVo_eGY_tMeO5Zy"/>
+</div>
+<div>
+<p class="text-sm font-bold">Wayne Ent.</p>
+<p class="text-xs text-slate-500">wayne.co</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">1d ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-danger/10 text-danger text-xs font-bold border border-danger/20">38</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-danger/20 text-danger">
+<span class="w-1.5 h-1.5 rounded-full bg-danger"></span>
+                                        Critical
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-danger">18 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] bg-slate-50/30 dark:bg-white/[0.01]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Globex logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe70Z8P6Eg27moTJbKIm7olXvImxRAA6R5fNF7wK7eW2aC3tfd7yJ0ZFE67Us-3QqNCBt1uV8BLoolPl22dsWnp0WrpV5TRjcILBh1Kxm6EyDVQ0xqDY8Dmmgkf1ny-tPo_i9RnWD7zJRjm0sjQxTi5NClc_EzID_y895pbxZpu8GSoaKYHE6BIZxfsdXHXgOuswXZ2IvWcjObfAZD_O1B8fWWisOCakEVoGGn8Cq5FGGrjrYiNrft2Lk6JTZ4svS5IbE_wHcCIDZG"/>
+</div>
+<div>
+<p class="text-sm font-bold">Globex Corp</p>
+<p class="text-xs text-slate-500">globex.info</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">12h ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-warning/10 text-warning text-xs font-bold border border-warning/20">75</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-warning/20 text-warning">
+<span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                                        Medium
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-warning">3 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Umbrella logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyhveQg27oLeW4zKzZzvOSVsotAj2We8qeR-WUea2f0ekyWdkBwlP-jef6sa_URu5woqCuL1rqx55K6xl6vHBqy1Z8Rud0H_ezPkLD4cEHdhQ8BGxt9pCR5Kh5gtPliW8-Gnn8UahuaOq0cWCjXc9XABA5TCUIbANrY2OFGPKupP6PJsljx4rQ4GL7J52KfZWf8jSV-wPg6lY4my87cGIGRZIEcakxHYiWWTw4zVq43B6jP816CjgMK_MbyHlCL4tQBKRaSsXqWAUK"/>
+</div>
+<div>
+<p class="text-sm font-bold">Umbrella Corp</p>
+<p class="text-xs text-slate-500">umbrella.science</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">4h ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/10 text-slate-400 text-xs font-bold border border-white/5">82</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                        Low
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-500">1 Finding</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] bg-slate-50/30 dark:bg-white/[0.01]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Cyberdyne logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9ubMAu_CBJrGS2ne7lhckaoePaMAK6zUDZNcS1YbsNv31omtbnDSI4c5F33Nwe3mQh9S99AMJozdci2ZmRk5o9vgdOMkvbk8tMyvMmtKLL1TEpg-Gsot-3oPDechGMmXyOKK8ONyUNmYdNrRCYEoDP9Z4Yg85FjrI_NQFEbtMHarRcqHcQzQl1ykZ1Odtf9hva5HUHCtq8qnEhFOsHLOjF2E2ta5T2yfYojQ9eHpw174NOGQnaQDz-PtuP9FQ-tGiFj8HYC9qwdou"/>
+</div>
+<div>
+<p class="text-sm font-bold">Cyberdyne Sys</p>
+<p class="text-xs text-slate-500">skynet.net</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">3d ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-warning/10 text-warning text-xs font-bold border border-warning/20">62</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-warning/20 text-warning">
+<span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                                        High
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-bold text-warning">5 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Hooli logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZl0QTERYn2LOcejOHBtQzEtff5Z8fNSq-PB7_KqL50tT-YGCOBkfAq9iI4a3Z0MW1rXPvbHpDt0Qa7yODhP0JFO3kNW7G_3MwasaLEgC1hS-YMpioGPIIJcqZeyahXLFsqqQhHtm_jl0_PxtzoupAJfqqPK5xYkd0aQE03W54E76JckRfNPYEuizUBW7S6KQNdPF0d72AoPADi5niOATRGrhBjtoQtdGVpnRG0Vfq1Zxnz4uaol_eVwBNMKWaG7EoX00xaOiJ7Mat"/>
+</div>
+<div>
+<p class="text-sm font-bold">Hooli</p>
+<p class="text-xs text-slate-500">hooli.io</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">2d ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-warning/10 text-warning text-xs font-bold border border-warning/20">78</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-warning/20 text-warning">
+<span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                                        Medium
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-warning">2 Findings</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 8 -->
+<tr class="group hover:bg-slate-50/50 dark:hover:bg-white/[0.02] bg-slate-50/30 dark:bg-white/[0.01]">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center">
+<img class="w-7 h-7" data-alt="Oscorp logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLu65fbnvJ4Gc2lK0i0tolq9S-SDD0Gf-rvIzUcX8-InLQDufU7k7tAS8ULgvinS7sKwtubr043DoxVe4nucrfKUxNxJUE4tc2tkGUfWG64T6zxQphM9B7pUTbUQzhsVmA-MVSY25yY6fcK0-7ja1xb58PD8hfCwijbzr52qNHFjM6iCWfNSJNgJw5XA3RIDCr0O-t1PDDWMC9wGBI6hO2uQKE3bu-1aMuQFBNY7swgVOsiIh-y7XD56A97nSIN85Jbhjrf2kipldk"/>
+</div>
+<div>
+<p class="text-sm font-bold">Oscorp</p>
+<p class="text-xs text-slate-500">oscorp.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">1h ago</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold border border-primary/20">88</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-primary/20 text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                        Low
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="text-sm font-medium text-slate-500">1 Finding</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex items-center justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">radar</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">visibility</span></button>
+<button class="p-2 hover:bg-white/10 rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+<button class="p-2 hover:bg-danger/10 hover:text-danger rounded-lg transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-6">
+<p class="text-xs text-slate-500 dark:text-slate-400">Showing 8 of 124 clients</p>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg glass-darker text-slate-400 hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-background-dark font-bold text-xs">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg glass-darker text-slate-400 hover:text-white transition-all text-xs">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg glass-darker text-slate-400 hover:text-white transition-all text-xs">3</button>
+<span class="text-slate-600 px-1">...</span>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg glass-darker text-slate-400 hover:text-white transition-all text-xs">16</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg glass-darker text-slate-400 hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Slide-in Drawer (New Client) -->
+<div class="absolute inset-0 bg-background-dark/40 backdrop-blur-sm z-40 transition-all">
+<div class="absolute right-0 top-0 bottom-0 w-[420px] bg-white dark:bg-[#0d1c14] border-l border-white/10 shadow-2xl z-50 flex flex-col glass">
+<div class="p-6 border-b border-white/10 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary/20 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person_add</span>
+</div>
+<h3 class="text-lg font-bold dark:text-white">New Client</h3>
+</div>
+<button class="w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-slate-400">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+<!-- Form Groups -->
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Representative Name</label>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="Bruce Wayne"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Company Name</label>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="Wayne Enterprises"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Primary Domain</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm">https://</span>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl pl-16 pr-4 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none" type="text" value="wayne.co"/>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">IP Scope (CIDR/Range)</label>
+<div class="flex flex-wrap gap-2 p-3 bg-white/5 border border-white/10 rounded-xl min-h-[46px]">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 text-primary text-[11px] font-medium border border-primary/20">
+                                        192.168.1.1/24
+                                        <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 text-primary text-[11px] font-medium border border-primary/20">
+                                        10.0.0.0/16
+                                        <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<input class="flex-1 min-w-[80px] bg-transparent border-none p-0 text-sm focus:ring-0 outline-none" placeholder="Add IP..." type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Authorized Emails</label>
+<div class="flex flex-wrap gap-2 p-3 bg-white/5 border border-white/10 rounded-xl min-h-[46px]">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-primary/10 text-primary text-[11px] font-medium border border-primary/20">
+                                        admin@wayne.co
+                                        <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<input class="flex-1 min-w-[80px] bg-transparent border-none p-0 text-sm focus:ring-0 outline-none" placeholder="Add email..." type="text"/>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Additional Notes</label>
+<textarea class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:ring-1 focus:ring-primary outline-none resize-none" placeholder="Compliance requirements, special scan times..." rows="4"></textarea>
+</div>
+</div>
+<div class="p-6 border-t border-white/10 grid grid-cols-2 gap-4">
+<button class="px-4 py-3 rounded-xl border border-white/10 text-slate-400 font-bold text-sm hover:bg-white/5 transition-all">
+                            Cancel
+                        </button>
+<button class="px-4 py-3 rounded-xl bg-primary text-background-dark font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+                            Save Client
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

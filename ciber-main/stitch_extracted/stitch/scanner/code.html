@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SIAR-C Security Scanner</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ff88",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f231a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .spin-slow {
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex">
+<!-- Sidebar Navigation -->
+<aside class="w-72 border-r border-slate-200 dark:border-primary/10 flex flex-col h-screen sticky top-0 bg-background-light dark:bg-background-dark/50 backdrop-blur-xl shrink-0">
+<div class="p-6 flex flex-col gap-8">
+<!-- Brand -->
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary border border-primary/30">
+<span class="material-symbols-outlined">shield_lock</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-none">SIAR-C Security</h1>
+<p class="text-primary/60 text-xs font-medium">Enterprise Plan</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-background-dark font-bold" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="text-sm">Security Scanner</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">vitals</span>
+<span class="text-sm font-medium">Vulnerabilities</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-500 hover:bg-primary/5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto">
+<div class="max-w-5xl mx-auto px-8 py-12">
+<!-- Header -->
+<header class="mb-10">
+<h2 class="text-4xl font-black tracking-tight text-slate-900 dark:text-slate-100">Security Scanner</h2>
+<p class="text-slate-500 dark:text-primary/60 mt-2 text-lg">Analyze vulnerabilities in domains and IPs</p>
+</header>
+<div class="flex flex-col items-center gap-12">
+<!-- Center Card: New Scan -->
+<section class="glass-card rounded-xl p-8 w-full max-w-[640px] shadow-2xl shadow-primary/5">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">add_circle</span>
+<h3 class="text-xl font-bold">New Scan</h3>
+</div>
+<div class="space-y-6">
+<!-- Large Input -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-400">Target</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">language</span>
+<input class="w-full bg-background-dark/50 border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-4 pl-12 pr-4 text-lg transition-all outline-none" placeholder="Enter domain or IP" type="text"/>
+</div>
+</div>
+<!-- Client Dropdown -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-400">Assign to Client</label>
+<select class="w-full bg-background-dark/50 border border-slate-700 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-3 px-4 text-base transition-all outline-none appearance-none">
+<option>Select Client...</option>
+<option>Acme Corp</option>
+<option>Global Logistics</option>
+<option>TechFlow Systems</option>
+</select>
+</div>
+<!-- Notification Email Chips -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-slate-400">Notification Recipients</label>
+<div class="flex flex-wrap gap-2 items-center min-h-[48px] p-2 bg-background-dark/30 rounded-lg border border-slate-800">
+<div class="bg-primary/10 border border-primary/20 text-primary px-3 py-1 rounded-full flex items-center gap-2 text-sm">
+<span>admin@company.com</span>
+<button class="hover:text-white"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/20 text-primary px-3 py-1 rounded-full flex items-center gap-2 text-sm">
+<span>security@company.com</span>
+<button class="hover:text-white"><span class="material-symbols-outlined text-sm">close</span></button>
+</div>
+<button class="flex items-center gap-1 text-primary/60 hover:text-primary px-2 transition-colors">
+<span class="material-symbols-outlined text-base">add</span>
+<span class="text-sm font-medium">Add Email</span>
+</button>
+</div>
+</div>
+<!-- START SCAN CTA -->
+<button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-black text-lg py-5 rounded-lg transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20 flex items-center justify-center gap-3">
+<span class="material-symbols-outlined">rocket_launch</span>
+                            START SCAN
+                        </button>
+</div>
+</section>
+<!-- Scan Progress Card -->
+<section class="glass-card rounded-xl p-8 w-full max-w-[640px] border-primary/20 shadow-xl">
+<div class="flex justify-between items-start mb-8">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary spin-slow">autorenew</span>
+<h3 class="text-xl font-bold">Scan Progress</h3>
+</div>
+<p class="text-primary text-sm font-mono ml-9">empresa.com</p>
+</div>
+<span class="text-primary text-2xl font-black">33%</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-slate-800 rounded-full mb-10 overflow-hidden relative">
+<div class="absolute inset-0 bg-primary/10 animate-pulse"></div>
+<div class="h-full bg-primary rounded-full shadow-[0_0_15px_rgba(0,255,136,0.5)] transition-all duration-1000" style="width: 33%"></div>
+</div>
+<!-- Checks List -->
+<div class="space-y-4">
+<!-- Completed -->
+<div class="flex items-center justify-between p-4 bg-primary/5 border border-primary/10 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div>
+<p class="font-bold text-sm">VirusTotal</p>
+<p class="text-xs text-primary/60">Malware Database Scan</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-bold">95/100</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-primary/5 border border-primary/10 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div>
+<p class="font-bold text-sm">SSL Labs</p>
+<p class="text-xs text-primary/60">Certificate Verification</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary font-bold">Grade A</p>
+</div>
+</div>
+<!-- In Progress -->
+<div class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg border-l-4 border-l-primary">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-white/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg spin-slow">sync</span>
+</div>
+<div>
+<p class="font-bold text-sm">HTTP Headers</p>
+<p class="text-xs text-slate-500">Security Policy Audit</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary text-xs font-black animate-pulse">IN PROGRESS</p>
+</div>
+</div>
+<!-- Pending -->
+<div class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-lg">hourglass_empty</span>
+</div>
+<div>
+<p class="font-bold text-sm">URLScan.io</p>
+<p class="text-xs text-slate-500">Snapshot &amp; Behavior</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-xs font-bold uppercase">Pending</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-lg">hourglass_empty</span>
+</div>
+<div>
+<p class="font-bold text-sm">IPInfo</p>
+<p class="text-xs text-slate-500">Geolocation &amp; ASN</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-xs font-bold uppercase">Pending</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<div class="size-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-lg">hourglass_empty</span>
+</div>
+<div>
+<p class="font-bold text-sm">HIBP</p>
+<p class="text-xs text-slate-500">Data Breach Search</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-slate-500 text-xs font-bold uppercase">Pending</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>
