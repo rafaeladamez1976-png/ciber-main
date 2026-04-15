@@ -5,6 +5,9 @@ import ClientLayout from "@/components/layout/ClientLayout";
 export const metadata: Metadata = {
   title: "SIAR-C | Ciberseguridad",
   description: "Plataforma profesional de análisis de ciberseguridad",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
