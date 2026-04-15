@@ -311,7 +311,7 @@ function HeaderResults({ results }: { results: any }) {
                     <div className="flex justify-between mt-2 text-[8px] font-black uppercase text-slate-500 tracking-widest">
                         <span>Pobre</span>
                         <span>Promedio</span>
-                        <span>Excelecnte</span>
+                        <span>Excelente</span>
                     </div>
                 </div>
             </div>
