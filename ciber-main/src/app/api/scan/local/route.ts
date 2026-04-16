@@ -59,7 +59,7 @@ export async function GET(request: Request) {
   try {
     // First, do a quick ping sweep to discover new hosts on the network
     // This ensures ARP cache is populated with active devices
-    const pingPromises: Promise<void>[] = [];
+    const pingPromises: Promise<any>[] = [];
     for (let i = 1; i <= 254; i++) {
       const ip = `${range}.${i}`;
       pingPromises.push(

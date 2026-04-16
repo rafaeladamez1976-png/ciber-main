@@ -169,7 +169,7 @@ export default function FindingCard({ finding, index }: FindingCardProps) {
                                                 </div>
                                                 <div className="flex justify-between items-center text-[11px]">
                                                     <span className="text-slate-500 font-medium">Identificador</span>
-                                                    <span className="text-white font-mono opacity-60">ID-{finding.id.substring(0, 8)}</span>
+                                                    <span className="text-white font-mono opacity-60">ID-{finding.id?.substring(0, 8) || 'N/A'}</span>
                                                 </div>
                                             </div>
                                         </div>

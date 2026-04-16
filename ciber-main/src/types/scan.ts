@@ -23,9 +23,9 @@ export interface Scan {
   score?: number;
   risk_level?: Severity;
   findings: Finding[];
-  api_results: Record<string, unknown>;
-  owasp_results: Record<string, unknown>;
-  headers_results: Record<string, unknown>;
+  api_results: Record<string, any>;
+  owasp_results: Record<string, { status: 'ok' | 'warning' | 'critical', count: number }>;
+  headers_results: Record<string, any>;
   created_at: string;
   completed_at?: string;
 }
