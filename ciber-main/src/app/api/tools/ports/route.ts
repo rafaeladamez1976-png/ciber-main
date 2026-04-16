@@ -12,21 +12,47 @@ const COMMON_PORTS: Record<number, string> = {
 
 const HIGH_RISK_PORTS = [21, 23, 445, 3389, 5900, 2375, 11211];
 
-function scanPort(host: string, port: number, timeout = 2000): Promise<boolean> {
+interface ScanResult {
+  port: number;
+  service: string;
+  state: 'open' | 'closed';
+  risk: 'high' | 'medium' | 'none';
+  version?: string;
+  banner?: string;
+}
+
+function scanPort(host: string, port: number, timeout = 2000): Promise<{ isOpen: boolean; version?: string }> {
   return new Promise((resolve) => {
     const socket = new net.Socket();
     let resolved = false;
+    let version = '';
 
     const cleanup = (result: boolean) => {
       if (!resolved) {
         resolved = true;
         socket.destroy();
-        resolve(result);
+        resolve({ isOpen: result, version: version || undefined });
       }
     };
 
     socket.setTimeout(timeout);
-    socket.on('connect', () => cleanup(true));
+    
+    socket.on('connect', () => {
+      // For some ports, we can try to wait a bit for a banner
+      if ([21, 22, 25, 110, 143].includes(port)) {
+        // Just wait for data event
+      } else if (port === 80 || port === 8080) {
+        socket.write('HEAD / HTTP/1.0\r\n\r\n');
+      } else {
+        cleanup(true);
+      }
+    });
+
+    socket.on('data', (data) => {
+      version = data.toString().split('\n')[0].trim();
+      cleanup(true);
+    });
+
     socket.on('timeout', () => cleanup(false));
     socket.on('error', () => cleanup(false));
 
@@ -35,6 +61,13 @@ function scanPort(host: string, port: number, timeout = 2000): Promise<boolean> 
     } catch {
       cleanup(false);
     }
+
+    // Fallback if no data received but connection was successful
+    setTimeout(() => {
+      if (socket.writable && !resolved) {
+        cleanup(true);
+      }
+    }, timeout - 200);
   });
 }
 
@@ -56,16 +89,17 @@ export async function GET(request: Request) {
 
   const results = await Promise.all(
     portsToScan.map(async (port) => {
-      const isOpen = await scanPort(target, port, 1500);
+      const { isOpen, version } = await scanPort(target, port, 1500);
       return {
         port,
         service: COMMON_PORTS[port] || 'Unknown',
         state: isOpen ? 'open' : 'closed',
         risk: HIGH_RISK_PORTS.includes(port) && isOpen ? 'high' : isOpen ? 'medium' : 'none',
+        version: version || (isOpen ? 'Detected (check service)' : undefined),
         banner: isOpen && HIGH_RISK_PORTS.includes(port) 
           ? `⚠️ Service ${COMMON_PORTS[port]} exposed — consider firewall rules` 
           : undefined,
-      };
+      } as ScanResult;
     })
   );
 
@@ -83,3 +117,4 @@ export async function GET(request: Request) {
     results: results.sort((a, b) => a.port - b.port),
   });
 }
+

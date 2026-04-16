@@ -13,12 +13,13 @@ import {
     ShieldCheck,
     ArrowRight,
     Loader2,
-    RefreshCw
+    RefreshCw,
+    Users
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlassCard from '@/components/ui/GlassCard';
 
-type ToolType = 'ports' | 'dns' | 'headers';
+type ToolType = 'ports' | 'dns' | 'headers' | 'kerbrute' | 'metasploit' | 'network';
 
 export default function SecurityToolsPage() {
     const [activeTool, setActiveTool] = useState<ToolType>('ports');
@@ -27,11 +28,19 @@ export default function SecurityToolsPage() {
     const [result, setResult] = useState<any>(null);
 
     const runTool = async () => {
-        if (!target) return;
+        if (!target && activeTool !== 'network') return;
         setIsLoading(true);
         setResult(null);
         try {
-            const endpoint = `/api/tools/${activeTool}?${activeTool === 'ports' || activeTool === 'headers' ? 'target' : 'domain'}=${target}`;
+            let endpoint = '';
+            switch (activeTool) {
+              case 'ports': endpoint = `/api/tools/ports?target=${target}`; break;
+              case 'dns': endpoint = `/api/tools/dns?domain=${target}`; break;
+              case 'headers': endpoint = `/api/tools/headers?target=${target}`; break;
+              case 'kerbrute': endpoint = `/api/tools/kerbrute?domain=${target}`; break;
+              case 'metasploit': endpoint = `/api/tools/metasploit?target=${target}`; break;
+              case 'network': endpoint = `/api/scan/local?range=${target || '192.168.1'}`; break;
+            }
             const res = await fetch(endpoint);
             const data = await res.json();
             setResult(data);
@@ -65,7 +74,37 @@ export default function SecurityToolsPage() {
                         <Server size={20} />
                         <div className="text-left">
                             <p className="text-sm font-bold uppercase">Port Scanner</p>
-                            <p className="text-[10px] opacity-70">Escaneo de servicios TCP</p>
+                            <p className="text-[10px] opacity-70">Servicios y Versiones</p>
+                        </div>
+                    </button>
+                    <button 
+                        onClick={() => {setActiveTool('network'); setResult(null); if (!target) setTarget('192.168.1');}}
+                        className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl transition-all border ${activeTool === 'network' ? 'bg-primary/10 border-primary text-primary' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
+                    >
+                        <Activity size={20} />
+                        <div className="text-left">
+                            <p className="text-sm font-bold uppercase">Discovery</p>
+                            <p className="text-[10px] opacity-70">Escáner de Red Local</p>
+                        </div>
+                    </button>
+                    <button 
+                        onClick={() => {setActiveTool('kerbrute'); setResult(null);}}
+                        className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl transition-all border ${activeTool === 'kerbrute' ? 'bg-primary/10 border-primary text-primary' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
+                    >
+                        <Users size={20} />
+                        <div className="text-left">
+                            <p className="text-sm font-bold uppercase">Kerbrute</p>
+                            <p className="text-[10px] opacity-70">Enumeración de Usuarios AD</p>
+                        </div>
+                    </button>
+                    <button 
+                        onClick={() => {setActiveTool('metasploit'); setResult(null);}}
+                        className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl transition-all border ${activeTool === 'metasploit' ? 'bg-primary/10 border-primary text-primary' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
+                    >
+                        <ShieldAlert size={20} />
+                        <div className="text-left">
+                            <p className="text-sm font-bold uppercase">Metasploit</p>
+                            <p className="text-[10px] opacity-70">Vulnerability Scan</p>
                         </div>
                     </button>
                     <button 
@@ -82,10 +121,10 @@ export default function SecurityToolsPage() {
                         onClick={() => {setActiveTool('headers'); setResult(null);}}
                         className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl transition-all border ${activeTool === 'headers' ? 'bg-primary/10 border-primary text-primary' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10'}`}
                     >
-                        <ShieldAlert size={20} />
+                        <Lock size={20} />
                         <div className="text-left">
-                            <p className="text-sm font-bold uppercase">Headers Analyzer</p>
-                            <p className="text-[10px] opacity-70">Políticas de seguridad HTTP</p>
+                            <p className="text-sm font-bold uppercase">Headers</p>
+                            <p className="text-[10px] opacity-70">Políticas HTTP</p>
                         </div>
                     </button>
                 </div>
@@ -100,13 +139,17 @@ export default function SecurityToolsPage() {
                                     type="text"
                                     value={target}
                                     onChange={(e) => setTarget(e.target.value)}
-                                    placeholder={activeTool === 'ports' ? "Ej: 192.168.1.1 o google.com" : "Ej: google.com"}
+                                    placeholder={
+                                      activeTool === 'network' ? "Ej: 192.168.1" :
+                                      activeTool === 'kerbrute' ? "Ej: corp.local" :
+                                      "Ej: 192.168.1.1 o google.com"
+                                    }
                                     className="w-full bg-black/40 border border-white/10 rounded-xl pl-12 pr-4 py-4 text-sm text-white focus:border-primary outline-none transition-all font-mono"
                                 />
                             </div>
                             <button 
                                 onClick={runTool}
-                                disabled={isLoading || !target}
+                                disabled={isLoading || (!target && activeTool !== 'network')}
                                 className="bg-primary text-black px-8 py-4 rounded-xl font-black text-xs uppercase tracking-widest hover:neon-glow transition-all disabled:opacity-50 flex items-center justify-center gap-3"
                             >
                                 {isLoading ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} />}
@@ -134,16 +177,146 @@ export default function SecurityToolsPage() {
                                 animate={{ opacity: 1, y: 0 }}
                                 className="space-y-6"
                             >
-                                {/* Tool Content based on Active Tool */}
                                 {activeTool === 'ports' && <PortResults results={result} />}
                                 {activeTool === 'dns' && <DnsResults results={result} />}
                                 {activeTool === 'headers' && <HeaderResults results={result} />}
+                                {activeTool === 'kerbrute' && <KerbruteResults results={result} />}
+                                {activeTool === 'metasploit' && <MetasploitResults results={result} />}
+                                {activeTool === 'network' && <NetworkResults results={result} />}
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             </div>
         </div>
+    );
+}
+
+function KerbruteResults({ results }: { results: any }) {
+    if (results.error) return <ErrorMessage message={results.error} />;
+    return (
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <GlassCard className="p-6 border-l-4 border-l-primary">
+                    <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Dominio</p>
+                    <h3 className="text-2xl font-black text-white">{results.domain}</h3>
+                </GlassCard>
+                <GlassCard className="p-6 border-l-4 border-l-info">
+                    <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Usuarios Encontrados</p>
+                    <h3 className="text-2xl font-black text-info">{results.usersFound}</h3>
+                </GlassCard>
+            </div>
+            <GlassCard className="p-0 overflow-hidden border-white/5">
+                <table className="w-full text-left">
+                    <thead className="bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                        <tr>
+                            <th className="px-8 py-4">Usuario</th>
+                            <th className="px-8 py-4">Estado</th>
+                            <th className="px-8 py-4">Método</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                        {results.results.map((r: any, i: number) => (
+                            <tr key={i} className="hover:bg-white/5 transition-colors">
+                                <td className="px-8 py-4 font-mono text-sm text-white">{r.user}</td>
+                                <td className="px-8 py-4">
+                                    <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${r.status === 'present' ? 'bg-primary/20 text-primary' : 'bg-slate-700/20 text-slate-300'}`}>
+                                        {r.status}
+                                    </span>
+                                </td>
+                                <td className="px-8 py-4 text-xs font-bold text-slate-400">{r.method}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </GlassCard>
+        </div>
+    );
+}
+
+function MetasploitResults({ results }: { results: any }) {
+    if (results.error) return <ErrorMessage message={results.error} />;
+    return (
+        <div className="space-y-6">
+            <GlassCard className="p-6 bg-black/40 border-danger/30">
+                <div className="flex items-center gap-3 mb-4">
+                    <ShieldAlert size={20} className="text-danger" />
+                    <h3 className="text-lg font-black text-white uppercase italic">MSF Security Findings</h3>
+                </div>
+                <div className="space-y-4">
+                    {results.findings.map((f: any, i: number) => (
+                        <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+                            <div className="flex justify-between items-center">
+                                <span className="text-[10px] font-mono text-primary">{f.plugin}</span>
+                                <span className={`text-[10px] font-black px-2 py-0.5 rounded ${f.severity === 'CRITICAL' ? 'bg-danger text-white' : 'bg-info/20 text-info'}`}>{f.severity}</span>
+                            </div>
+                            <p className="text-sm font-bold text-white">{f.description}</p>
+                            <p className="text-[10px] text-slate-500 uppercase font-black">Result: {f.result}</p>
+                        </div>
+                    ))}
+                </div>
+            </GlassCard>
+            <GlassCard className="p-6">
+                <p className="text-[10px] font-black text-slate-500 uppercase mb-3 tracking-widest">Raw Console Output</p>
+                <div className="bg-black p-4 rounded-lg font-mono text-xs text-green-500 overflow-x-auto whitespace-pre border border-white/5">
+                    {results.raw_output}
+                </div>
+            </GlassCard>
+        </div>
+    );
+}
+
+function NetworkResults({ results }: { results: any }) {
+    if (results.error) return <ErrorMessage message={results.error} />;
+    return (
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <GlassCard className="p-6 border-l-4 border-l-primary">
+                    <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Dispositivos</p>
+                    <h3 className="text-4xl font-black text-white">{results.totalFound}</h3>
+                </GlassCard>
+                <GlassCard className="p-6 border-l-4 border-l-info">
+                    <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Escaneado en</p>
+                    <h3 className="text-2xl font-black text-info">{results.scanTime.split('T')[1].split('.')[0]}</h3>
+                </GlassCard>
+                <GlassCard className="p-6 border-l-4 border-l-warning">
+                    <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Rango</p>
+                    <h3 className="text-2xl font-black text-warning">{results.range}</h3>
+                </GlassCard>
+            </div>
+            <GlassCard className="p-0 overflow-hidden border-white/5">
+                <table className="w-full text-left">
+                    <thead className="bg-white/5 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                        <tr>
+                            <th className="px-8 py-4">IP</th>
+                            <th className="px-8 py-4">Hostname</th>
+                            <th className="px-8 py-4">Fabricante</th>
+                            <th className="px-8 py-4">MAC</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                        {results.devices.map((d: any, i: number) => (
+                            <tr key={i} className="hover:bg-white/5 transition-colors">
+                                <td className="px-8 py-4 font-mono text-sm text-primary">{d.ip}</td>
+                                <td className="px-8 py-4 text-xs font-bold text-white">{d.hostname}</td>
+                                <td className="px-8 py-4 text-xs text-slate-400 font-bold">{d.vendor}</td>
+                                <td className="px-8 py-4 font-mono text-[10px] text-slate-500">{d.mac}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </GlassCard>
+        </div>
+    );
+}
+
+function ErrorMessage({ message }: { message: string }) {
+    return (
+        <GlassCard className="p-8 border-danger/20 text-center">
+            <ShieldAlert className="text-danger mx-auto mb-4" size={48} />
+            <h3 className="text-xl font-black text-white uppercase italic">Error en el Proceso</h3>
+            <p className="text-slate-400 mt-2 text-sm">{message}</p>
+        </GlassCard>
     );
 }
 
@@ -171,6 +344,7 @@ function PortResults({ results }: { results: any }) {
                         <tr>
                             <th className="px-8 py-4">Puerto</th>
                             <th className="px-8 py-4">Servicio</th>
+                            <th className="px-8 py-4">Versión / Banner</th>
                             <th className="px-8 py-4">Estado</th>
                             <th className="px-8 py-4">Severidad</th>
                         </tr>
@@ -180,6 +354,7 @@ function PortResults({ results }: { results: any }) {
                             <tr key={i} className={`hover:bg-white/5 transition-colors ${r.state === 'open' ? 'bg-white/[0.02]' : ''}`}>
                                 <td className="px-8 py-4 font-mono text-sm text-white">{r.port}</td>
                                 <td className="px-8 py-4 text-xs font-bold text-slate-400">{r.service}</td>
+                                <td className="px-8 py-4 text-[10px] font-mono text-slate-500 max-w-xs truncate">{r.version}</td>
                                 <td className="px-8 py-4">
                                     <span className={`text-[10px] font-black uppercase px-2 py-1 rounded ${r.state === 'open' ? 'bg-primary/20 text-primary' : 'bg-slate-700/20 text-slate-500'}`}>
                                         {r.state}
